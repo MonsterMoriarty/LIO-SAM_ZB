@@ -144,15 +144,15 @@ public:
 
     void imuHandler(const sensor_msgs::Imu::ConstPtr& imuMsg)
     {
-	sensor_msgs::Imu imuNeedConvert = *imuMsg;
-	double imuRoll,imuPitch,imuYaw;
-	tf::Quaternion orientation;
-
-	tf::quaternionMsgToTF(imuNeedConvert.orientation,orientation);
-	tf::Matrix3x3(orientation).getRPY(imuRoll, imuPitch, imuYaw);
-	imuYaw=imuYaw+1.5;
-	imuNeedConvert.orientation=tf::createQuaternionMsgFromRollPitchYaw(imuRoll,imuPitch,imuYaw);
-	//
+        //转换为RPY进行补偿，然后再转回四元数进行运算。
+	    sensor_msgs::Imu imuNeedConvert = *imuMsg;
+        double imuRoll,imuPitch,imuYaw;
+        tf::Quaternion orientation;
+        tf::quaternionMsgToTF(imuNeedConvert.orientation,orientation);
+        tf::Matrix3x3(orientation).getRPY(imuRoll, imuPitch, imuYaw);
+        imuYaw=imuYaw+1.5;
+        imuNeedConvert.orientation=tf::createQuaternionMsgFromRollPitchYaw(imuRoll,imuPitch,imuYaw);
+	    //
         sensor_msgs::Imu thisImu = imuConverter(imuNeedConvert);
 
         std::lock_guard<std::mutex> lock1(imuLock);
