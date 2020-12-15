@@ -152,13 +152,14 @@ public:
         tf::Matrix3x3(orientation).getRPY(imuRoll, imuPitch, imuYaw);
         imuYaw=imuYaw+0;
         imuNeedConvert.orientation=tf::createQuaternionMsgFromRollPitchYaw(imuRoll,imuPitch,imuYaw);
-	    //
+	    //到此我的代码结束了
         sensor_msgs::Imu thisImu = imuConverter(imuNeedConvert);
 
         std::lock_guard<std::mutex> lock1(imuLock);
         imuQueue.push_back(thisImu);
 
         // debug IMU data
+        //输出IMU数据查看偏差
         cout << std::setprecision(6);
         cout << "IMU acc: " << endl;
         cout << "x: " << thisImu.linear_acceleration.x << 
