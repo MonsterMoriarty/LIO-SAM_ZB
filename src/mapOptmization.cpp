@@ -331,21 +331,6 @@ public:
         return thisPose6D;
     }
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     void visualizeGlobalMapThread()
     {
         ros::Rate rate(0.2);
